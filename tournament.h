@@ -1,9 +1,10 @@
 #pragma once
-
 #include <cstdlib>
 #include <ctime>
 #include "strategies.h"
 #include "state.h"
+#include <iomanip>
+#include <sstream>
 #include <memory>
 
 vector<string> strat = {"tft"/*, "ftft"*/, "007", "johnwick", "switcheroo", "coop", "def"};
@@ -18,7 +19,7 @@ unordered_map<string, strategy *> strat_map = {
 
 void ls () {
     cout << "Available strategies:" << endl;
-    for (const auto &s:strat) cout << L"\x2022" << s << endl; // bullet point
+    for (const auto &s:strat) cout << "\u2022" << s << endl; // bullet point
 }
 
 void play(const string &strat1, const string &strat2) {
@@ -27,18 +28,32 @@ void play(const string &strat1, const string &strat2) {
     if (strat_map.find(strat1) != strat_map.end() && strat_map.find(strat2) != strat_map.end()) {
         strategy* s1 = strat_map[strat1];
         strategy* s2 = strat_map[strat2];
-        
-        /*bool A_move = s1->decide(game.p2);
-        bool B_move = s2->decide(game.p1);*/
-        s1->print();
-        s2->print();
+        game.set_strat(strat1, strat2);
+        for (int i=0; i<10; ++i) {
+            bool A_move = s1->decide(game.get_p2());
+            bool B_move = s2->decide(game.get_p1());
+            game.set_p(A_move, B_move);
+        }
+        char winner=game.calc_scores();
+        cout << left << setw(10) << "Player" << setw(25) << "Years of Sentence" << setw(30) << "Strategy Used" << endl;
+        cout << "-------------------------------------------------------------" << endl;
+        cout << setw(10) << "A" << setw(25) << game.get_winscore('A') << setw(30) << game.strat_used('A') << endl;
+        cout << setw(10) << "B" << setw(25) << game.get_winscore('B') << setw(30) << game.strat_used('B') << endl;
+        cout << "-------------------------------------------------------------" << endl;
+        if (winner == 'A') {
+            cout << "A won the game by capitalizing on B's decision, getting them punished with " << game.get_punish('B') << " years." << endl;
+        } else if (winner == 'B') {
+            cout << "B won the game by capitalizing on A's decision, getting them punished with " << game.get_punish('A') << " years." << endl;
+        } else {
+            cout << "It's a tie. Both players receive " << game.get_winscore('A') << " years of punishment." << endl;
+        }
+        cout << endl;
+        cout << endl;
     }
     else {
         cout << "Invalid strategy. " << endl;
         return;
     }
-    /*game.p1.push_back();   //idiota! do not try to access private members from outside the class
-    game.p2.push_back();*/
 }
 
 void tournament() {
