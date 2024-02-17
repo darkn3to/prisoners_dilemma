@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#pragma once
+
+#include <vector>
 using namespace std;
 
 class state {
@@ -8,5 +10,4 @@ class state {
     public: 
         state() : A_score(0), B_score(0) {}
 
-        void update() {}
 };
