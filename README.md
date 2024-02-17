@@ -18,4 +18,4 @@ g++ main.cpp
 ```
 to run the game.
 <br><br>
-Furthermore, one can also add more strategies in ```cmd strategies.h``` to implement unique decision-making approaches.
+Furthermore, one can also add more strategies in ```strategies.h``` to implement unique decision-making approaches.
