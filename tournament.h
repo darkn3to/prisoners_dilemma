@@ -1,4 +1,5 @@
 #pragma once
+#include "tabulate.hpp"
 #include <cstdlib>
 #include <ctime>
 #include "strategies.h"
@@ -6,6 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include <memory>
+using namespace tabulate;
 
 vector<string> strat = {"tft"/*, "ftft"*/, "007", "johnwick", "switcheroo", "coop", "def"};
 unordered_map<string, strategy *> strat_map = {
@@ -16,13 +18,14 @@ unordered_map<string, strategy *> strat_map = {
     {"coop", new coop()},
     {"def", new def()}
 };
+Table tabs;
 
 void ls () {
     cout << "Available strategies:" << endl;
     for (const auto &s:strat) cout << "\u2022" << s << endl; // bullet point
 }
 
-void play(const string &strat1, const string &strat2) {
+void play(const string &strat1, const string &strat2, int round) {
     // strategies have been fed, now use the given strategy to update scores.
     state game;
     if (strat_map.find(strat1) != strat_map.end() && strat_map.find(strat2) != strat_map.end()) {
@@ -35,7 +38,7 @@ void play(const string &strat1, const string &strat2) {
             game.set_p(A_move, B_move);
         }
         char winner=game.calc_scores();
-        cout << left << setw(10) << "Player" << setw(25) << "Years of Sentence" << setw(30) << "Strategy Used" << endl;
+        /*cout << left << setw(10) << "Player" << setw(25) << "Years of Sentence" << setw(30) << "Strategy Used" << endl;
         cout << "-------------------------------------------------------------" << endl;
         cout << setw(10) << "A" << setw(25) << game.get_winscore('A') << setw(30) << game.strat_used('A') << endl;
         cout << setw(10) << "B" << setw(25) << game.get_winscore('B') << setw(30) << game.strat_used('B') << endl;
@@ -48,7 +51,15 @@ void play(const string &strat1, const string &strat2) {
             cout << "It's a tie. Both players receive " << game.get_winscore('A') << " years of punishment." << endl;
         }
         cout << endl;
-        cout << endl;
+        cout << endl;*/
+        string round_str = to_string(round+1);
+        string winner_str;
+        if (winner == 'A') winner_str = "A";
+        else if (winner == 'B') winner_str = "B";
+        else winner_str = "Tie";
+        string scoreA_str = to_string(game.get_score('A'));
+        string scoreB_str = to_string(game.get_score('B'));
+        tabs.add_row({round_str, winner_str, scoreA_str, scoreB_str, game.strat_used('A'), game.strat_used('B')});
     }
     else {
         cout << "Invalid strategy. " << endl;
@@ -58,6 +69,8 @@ void play(const string &strat1, const string &strat2) {
 
 void tournament() {
     srand(time(nullptr));
+    tabs.add_row({"Round", "Winner", "Winner's YOS", "Loser's YOS", "A's Strategy", "B's Strategy"});
+    tabs[0].format().font_style({FontStyle::bold}).font_background_color(Color::magenta).font_align(FontAlign::center).border_left_color(Color::magenta).border_left_background_color(Color::magenta);
     for (int round=0; round<20; ++round) {
         int n=strat.size();
         /*                             //manual selection of strategies. later...
@@ -67,6 +80,9 @@ void tournament() {
         */
         string strat1=strat[(rand()%n)];
         string strat2=strat[(rand()%n)];
-        play(strat1, strat2);
+        play(strat1, strat2, round);
     }
+    cout << tabs << endl;
+    cout << "Press any key to exit...";
+    while (std::cin.get() != '\n') {}
 }

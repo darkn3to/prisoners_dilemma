@@ -32,8 +32,8 @@ class state {
             else return this->A_sent;
         }
 
-        inline int get_winscore(char winner) {
-            if (winner=='A') return this->A_sent;
+        inline int get_score(char player) {
+            if (player=='A') return this->A_sent;
             else return this->B_sent;
         }
 
