@@ -7,14 +7,15 @@
 #include <iomanip>
 using namespace tabulate;
 
-vector<string> strat = {"tft"/*, "ftft"*/, "007", "johnwick", "switcheroo", "coop", "def"};
+vector<string> strat = {"tft"/*, "ftft"*/, "007", "johnwick", "switcheroo", "coop", "def", "random"};
 unordered_map<string, strategy *> strat_map = {
     {"tft", new tft()},
     {"007", new agent007()},
     {"johnwick", new johnwick()},
     {"switcheroo", new switcheroo()},
     {"coop", new coop()},
-    {"def", new def()}
+    {"def", new def()}, 
+    {"random", new random()}
 };
 Table tabs;
 
@@ -36,20 +37,6 @@ void play(const string &strat1, const string &strat2, int round) {
             game.set_p(A_move, B_move);
         }
         char winner=game.calc_scores();
-        /*cout << left << setw(10) << "Player" << setw(25) << "Years of Sentence" << setw(30) << "Strategy Used" << endl;
-        cout << "-------------------------------------------------------------" << endl;
-        cout << setw(10) << "A" << setw(25) << game.get_winscore('A') << setw(30) << game.strat_used('A') << endl;
-        cout << setw(10) << "B" << setw(25) << game.get_winscore('B') << setw(30) << game.strat_used('B') << endl;
-        cout << "-------------------------------------------------------------" << endl;
-        if (winner == 'A') {
-            cout << "A won the game by capitalizing on B's decision, getting them punished with " << game.get_punish('B') << " years." << endl;
-        } else if (winner == 'B') {
-            cout << "B won the game by capitalizing on A's decision, getting them punished with " << game.get_punish('A') << " years." << endl;
-        } else {
-            cout << "It's a tie. Both players receive " << game.get_winscore('A') << " years of punishment." << endl;
-        }
-        cout << endl;
-        cout << endl;*/
         string round_str = to_string(round+1);
         string winner_str;
         if (winner == 'A') winner_str = "A";
@@ -58,6 +45,21 @@ void play(const string &strat1, const string &strat2, int round) {
         string scoreA_str = to_string(game.get_score('A'));
         string scoreB_str = to_string(game.get_score('B'));
         tabs.add_row({round_str, winner_str, scoreA_str, scoreB_str, game.strat_used('A'), game.strat_used('B')});
+        if (winner_str=="Tie") {
+            tabs[round+1][1].format().font_color(Color::yellow);
+            tabs[round+1][2].format().font_color(Color::yellow);
+            tabs[round+1][3].format().font_color(Color::yellow);
+        }
+        else if (winner_str=="A") {
+            tabs[round+1][1].format().font_color(Color::green);
+            tabs[round+1][2].format().font_color(Color::green);
+            tabs[round+1][3].format().font_color(Color::red);
+        }
+        else if (winner_str=="B") {
+            tabs[round+1][1].format().font_color(Color::green);
+            tabs[round+1][2].format().font_color(Color::red);
+            tabs[round+1][3].format().font_color(Color::green);
+        }
     }
     else {
         cout << "Invalid strategy. " << endl;
@@ -67,20 +69,9 @@ void play(const string &strat1, const string &strat2, int round) {
 
 void tournament() {
     srand(time(nullptr));
-    tabs.add_row({"Round", "Winner", "Winner's YOS", "Loser's YOS", "A's Strategy", "B's Strategy"});
-    tabs[0].format().font_style({FontStyle::bold}).font_background_color(Color::blue).font_align(FontAlign::center);
-    tabs[0][0].format().font_color(Color::white);
-    tabs[0][1].format().font_color(Color::white);
-    tabs[0][2].format().font_color(Color::white);
-    tabs[0][3].format().font_color(Color::white);
-    tabs[0][4].format().font_color(Color::white);
-    tabs[0][5].format().font_color(Color::white);
-    tabs.column(0).format().width(15);
-    tabs.column(1).format().width(15);
-    tabs.column(2).format().width(15);
-    tabs.column(3).format().width(15);
-    tabs.column(4).format().width(15);
-    tabs.column(5).format().width(15);
+    tabs.add_row({"Round", "Winner", "A's YOS", "B's YOS", "A's Strategy", "B's Strategy"});
+    tabs[0].format().font_style({FontStyle::italic}).font_background_color(Color::blue).font_align(FontAlign::center);
+    tabs.format().width(15);
     tabs.format().font_align({FontAlign::center});
     for (int round=0; round<20; ++round) {
         int n=strat.size();

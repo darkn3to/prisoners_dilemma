@@ -69,6 +69,13 @@ class agent007 : public strategy {               // the cautious
         }
 };
 
+class random : public strategy {             // the gambler
+    public:
+        bool decide(const vector<bool> &opponent) override {
+            return (rand()%2==0)?true:false;
+        }
+};
+
 class ftft : public strategy {             // not decided yet
 
 };
