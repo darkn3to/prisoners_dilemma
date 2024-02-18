@@ -5,8 +5,6 @@
 #include "strategies.h"
 #include "state.h"
 #include <iomanip>
-#include <sstream>
-#include <memory>
 using namespace tabulate;
 
 vector<string> strat = {"tft"/*, "ftft"*/, "007", "johnwick", "switcheroo", "coop", "def"};
@@ -70,7 +68,20 @@ void play(const string &strat1, const string &strat2, int round) {
 void tournament() {
     srand(time(nullptr));
     tabs.add_row({"Round", "Winner", "Winner's YOS", "Loser's YOS", "A's Strategy", "B's Strategy"});
-    tabs[0].format().font_style({FontStyle::bold}).font_background_color(Color::magenta).font_align(FontAlign::center).border_left_color(Color::magenta).border_left_background_color(Color::magenta);
+    tabs[0].format().font_style({FontStyle::bold}).font_background_color(Color::blue).font_align(FontAlign::center);
+    tabs[0][0].format().font_color(Color::white);
+    tabs[0][1].format().font_color(Color::white);
+    tabs[0][2].format().font_color(Color::white);
+    tabs[0][3].format().font_color(Color::white);
+    tabs[0][4].format().font_color(Color::white);
+    tabs[0][5].format().font_color(Color::white);
+    tabs.column(0).format().width(15);
+    tabs.column(1).format().width(15);
+    tabs.column(2).format().width(15);
+    tabs.column(3).format().width(15);
+    tabs.column(4).format().width(15);
+    tabs.column(5).format().width(15);
+    tabs.format().font_align({FontAlign::center});
     for (int round=0; round<20; ++round) {
         int n=strat.size();
         /*                             //manual selection of strategies. later...
@@ -83,6 +94,7 @@ void tournament() {
         play(strat1, strat2, round);
     }
     cout << tabs << endl;
+    cout << endl;
     cout << "Press any key to exit...";
     while (std::cin.get() != '\n') {}
 }
