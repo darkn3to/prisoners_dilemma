@@ -9,6 +9,8 @@ The game follows some simple rules:<br>
 <br><br>
 
 This project was inspired by the video ["What Game Theory Reveals About Life, The Universe, and Everything"](https://www.youtube.com/watch?v=mScpHTIi-kM&t=1040s&pp=ygUKdmVyaXRhc2l1bQ%3D%3D) by Veritasium. 
+<br>
+["Tabulate"](https://github.com/p-ranav/tabulate) by p-ranav was used to tabulate the data. 
 <br><br>
 
 You may simply clone the repository to your machine and run the command
