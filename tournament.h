@@ -7,7 +7,7 @@
 #include <iomanip>
 using namespace tabulate;
 
-vector<string> strat = {"tft"/*, "ftft"*/, "007", "johnwick", "switcheroo", "coop", "def", "random"};
+vector<string> strat = {"tft"/*, "ftft"*/, "007", "johnwick", "switcheroo", "coop", "def", "gamble"};
 unordered_map<string, strategy *> strat_map = {
     {"tft", new tft()},
     {"007", new agent007()},
@@ -15,7 +15,7 @@ unordered_map<string, strategy *> strat_map = {
     {"switcheroo", new switcheroo()},
     {"coop", new coop()},
     {"def", new def()}, 
-    {"random", new random()}
+    {"gamble", new gamble()}
 };
 Table tabs;
 
@@ -70,9 +70,9 @@ void play(const string &strat1, const string &strat2, int round) {
 void tournament() {
     srand(time(nullptr));
     tabs.add_row({"Round", "Winner", "A's YOS", "B's YOS", "A's Strategy", "B's Strategy"});
-    tabs[0].format().font_style({FontStyle::italic}).font_background_color(Color::blue).font_align(FontAlign::center);
+    tabs.format().font_align(FontAlign::center);
+    tabs[0].format().font_style({FontStyle::bold}).font_background_color(Color::blue);
     tabs.format().width(15);
-    tabs.format().font_align({FontAlign::center});
     for (int round=0; round<20; ++round) {
         int n=strat.size();
         /*                             //manual selection of strategies. later...
