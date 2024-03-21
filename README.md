@@ -3,7 +3,7 @@ This project is a C++ implementation of the classic game theory problem known as
 <br><br>
 The game follows some simple rules:<br>
 - There are 20 rounds in total, each comprising of 10 turns for each player.
-- If both players cooperate, they both receive a moderate sentence.<br>
+- If both players cooperate, they both receive a mild sentence.<br>
 - If one player betrays while the other cooperates, the betrayer receives no sentence while the cooperator receives a severe sentence.<br>
 - If both players betray each other, they both receive a moderate sentence.
 <br><br>
