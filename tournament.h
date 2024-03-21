@@ -19,11 +19,6 @@ unordered_map<string, strategy *> strat_map = {
 };
 Table tabs;
 
-void ls () {
-    cout << "Available strategies:" << endl;
-    for (const auto &s:strat) cout << "\u2022" << s << endl; // bullet point
-}
-
 void play(const string &strat1, const string &strat2, int round) {
     // strategies have been fed, now use the given strategy to update scores.
     state game;
@@ -75,11 +70,6 @@ void tournament() {
     tabs.format().width(15);
     for (int round=0; round<20; ++round) {
         int n=strat.size();
-        /*                             //manual selection of strategies. later...
-        string strat1, strat2;
-        ls();
-        cin << strat1 << strat2;
-        */
         string strat1=strat[(rand()%n)];
         string strat2=strat[(rand()%n)];
         play(strat1, strat2, round);
