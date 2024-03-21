@@ -45,12 +45,12 @@ class state {
         char calc_scores() {
             for (int i=0; i<10; ++i) {
                 if (this->p1[i]==true && this->p2[i]==true) {
-                    this->A_sent+=4;
-                    this->B_sent+=4;
-                }
-                else if (this->p1[i]==false && this->p2[i]==false) {
                     this->A_sent+=2;
                     this->B_sent+=2;
+                }
+                else if (this->p1[i]==false && this->p2[i]==false) {
+                    this->A_sent+=4;
+                    this->B_sent+=4;
                 }
                 else if (this->p1[i]==true && this->p2[i]==false) {
                     this->A_sent+=5;
