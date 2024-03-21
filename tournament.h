@@ -87,5 +87,5 @@ void tournament() {
     cout << tabs << endl;
     cout << endl;
     cout << "Press any key to exit...";
-    while (std::cin.get() != '\n') {}
+    while (cin.get() != '\n') 
 }
