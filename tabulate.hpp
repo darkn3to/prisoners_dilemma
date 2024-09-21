@@ -7036,7 +7036,7 @@ private:
     column_separator_ = "|";
     column_separator_color_ = column_separator_background_color_ = Color::none;
     multi_byte_characters_ = false;
-    locale_ = "";
+    locale_ = "C";
   }
 
   // Helper methods for word wrapping:
